@@ -43,7 +43,7 @@ Pedro H. Peixoto
 ->>>>>>>>Print das telas prototipadas: <<<<<<<<<<<<-
 ![Tela de login](<![image](https://github.com/user-attachments/assets/842b56d7-f782-4eb5-b43c-b2d824846ba9)
 >)
-![Tela de cadastro](<https://imgur.com/a/CpLKT6k>)
+![Tela de cadastro](https://imgur.com/a/CpLKT6k)
 
 
 
