@@ -51,3 +51,4 @@ Pedro H. Peixoto
 
 Link dos protótipos no figma ou equivalente: 
 https://trello.com/b/HbZdhBdZ/sa-2-fase
+https://www.canva.com/design/DAGLIm1MhQM/2Z7UrZ6E13dlhwZuCJmRNA/edit
