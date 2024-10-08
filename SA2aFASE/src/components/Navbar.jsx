@@ -3,10 +3,11 @@ import './Navbar.css'
 function Navbar() {
   return (
     <nav className="navbar">
-        <Link to="/">Home</Link>
-        <Link to="/contato">Contato</Link>
-        <Link to="/generica">Genérica</Link>
-        <Link to="/final">Final</Link>
+      <label>DreamZ</label>
+        <Link to="/">Login</Link>
+        <Link to="/contato">Registro</Link>
+        <Link to="/generica">Calendario</Link>
+        <Link to="/final">Meu Perfil</Link>
     </nav>
   )
 }
