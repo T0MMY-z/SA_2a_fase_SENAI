@@ -41,8 +41,9 @@ Pedro H. Peixoto
 
 
 ->>>>>>>>Print das telas prototipadas: <<<<<<<<<<<<-
-![alt text](<tela de login SA.png>)
-![alt text](<tela de cadastro SA.png>)
+![Tela de login](<![image](https://github.com/user-attachments/assets/842b56d7-f782-4eb5-b43c-b2d824846ba9)
+>)
+![Tela de cadastro](https://i.imgur.com/4bo56qK.png)
 
 
 
@@ -50,3 +51,4 @@ Pedro H. Peixoto
 
 Link dos protótipos no figma ou equivalente: 
 https://trello.com/b/HbZdhBdZ/sa-2-fase
+https://www.canva.com/design/DAGLIm1MhQM/2Z7UrZ6E13dlhwZuCJmRNA/edit
