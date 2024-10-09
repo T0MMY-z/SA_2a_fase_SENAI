@@ -15,6 +15,7 @@ body {
     height: 100vh; 
     display: flex;
     flex-direction: column;
+    
 
 }
 
@@ -59,9 +60,13 @@ body {
     justify-content: center; 
     align-items: flex-start; 
     padding: 20px;
-    font-family: comforta;
+    font-family: landing;
     padding-left: 100px;
+    font-size:80px;
+    
 }
+
+
 
 .div-4 {
     background-color: #1a347f;
@@ -69,18 +74,60 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 40px;
+    
 }
 
-.div-4 button {
-    background-color: #17006a;
+
+
+.btn-2 {
+    background-color: #1a347f;; 
     color: white;
     border: none;
     padding: 15px 30px;
     font-size: 18px;
-    border-radius: 10px;
     cursor: pointer;
-    margin-top: 50px;
-}
+    font-family: landing;
+    text-transform: uppercase;
+    position: relative;
+    transition: background-color 0.3s ease, letter-spacing 0.3s ease;
+    overflow: hidden;
+    height: 110;
+  }
+  
+  .btn-2:hover {
+    background-color: #1a347f; 
+    letter-spacing: 2px;
+  }
+  
+  .btn-2:before,
+  .btn-2:after {
+    content: '';
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: white;
+    transition: width 0.3s ease;
+  }
+  
+  .btn-2:before {
+    top: 0;
+    width: 0;
+  }
+  
+  .btn-2:after {
+    bottom: 0;
+    width: 0;
+  }
+  
+  .btn-2:hover:before,
+  .btn-2:hover:after {
+    width: 60%;
+    
+    
+  }
+  
 
 
 .div-3 {
@@ -93,9 +140,13 @@ body {
 }
 
 .div-3 img {
-    max-width: 100%;
-    height: auto;
+    max-width: 900%;
+    max-height: none;
+    width: 70%; 
+    height: auto; 
+    
 }
+
 
 
 .div-5 {
@@ -107,6 +158,9 @@ body {
     align-items: center; 
     font-size: 16px;
     color: white;
+    font-family: landing;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .div-5 label{
@@ -121,7 +175,15 @@ body {
     src: url(./public/fonts/comforta.ttf);
 }
 
+@font-face {
+    font-family: landing;
+    src: url(public/fonts/landing.ttf);
+}
 .dream{
     font-family: comforta;
     font-size: xx-large;
 }
+
+
+  
+

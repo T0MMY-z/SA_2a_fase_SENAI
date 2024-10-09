@@ -8,6 +8,7 @@ function Home() {
 
   return (
     <div className="container">
+       
       <Navbar />
       <div className="div-1">
         
@@ -15,16 +16,15 @@ function Home() {
       </div>
 
       <div className="row">
+        
         <div className="div-2">
+         
           <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam eos
-            delectus exercitationem facilis quasi cumque molestias reprehenderit
-            numquam. Animi accusantium sit quisquam reiciendis nobis nulla
-            eveniet adipisci fugit dolor excepturi?
+            Sua noite de sono decente, deixa a gente contente
           </p>
-          <p>Lorem ipsum dolor sit amet</p>
+          <p></p>
           <div className="div-4">
-            <button>BOTÃO</button>
+            <button className="btn-2">Comece aqui</button>
           </div>
         </div>
 
@@ -34,6 +34,7 @@ function Home() {
       </div>
 
       <div className="div-5">
+        
         <label>INSTAGRAM</label>
         <label>FACEBOOK</label>
         <label>EMAIL</label>
