@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import "./Contato.css"; 
+import "./Login.css"; 
 
 function Contato() {
   return (
@@ -11,22 +11,16 @@ function Contato() {
           <h2 className="slogan">Onde sua noite de sono é importante para nós</h2>
         </div>
         <div className="card-baixo">
-          <h2 className="card-title">REGISTRE-SE</h2>
+          <h2 className="card-title">Acesse sua conta</h2>
           <form className="register-form">
             <div className="form-group">
               <input type="text" id="name" placeholder="Digite seu nome" />
             </div>
             <div className="form-group">
-              <input type="email" id="email" placeholder="Digite seu e-mail" />
-            </div>
-            <div className="form-group">
               <input type="password" id="password" placeholder="Digite sua senha" />
             </div>
-            <button className="register-button">REGISTRAR</button>
+            <button className="register-button">Login</button>
           </form>
-          <p className="login-label">
-            Já possui conta? <a href="/login">Clique aqui</a>
-          </p>
         </div>
       </div>
     </div>
