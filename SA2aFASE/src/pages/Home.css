@@ -52,6 +52,10 @@ body {
     font-size: 70px;
     
 }
+.p1{
+    color: #ffffff;
+
+}
 
 .p2{
     font-family: landing;
@@ -59,7 +63,7 @@ body {
     margin-top: 40px;
     margin-right: 50px;
     text-align: center;
-    color: #ecc680;
+    color: #d0dcff;
 }
 
 .div-4 {
@@ -71,7 +75,7 @@ body {
 }
 
 .btn-2 {
-    background-color: #1a347f; /* Cor igual ao fundo */
+    background-color: #10225a; /* Cor igual ao fundo */
     color: white;
     border: none;
     padding: 15px 20px; /* Ajuste do padding para reduzir a altura */
@@ -83,7 +87,7 @@ body {
     transition: background-color 0.3s ease, letter-spacing 0.3s ease;
     overflow: hidden;
     height: auto; /* Ajuste para altura automática */
-    border-radius: 8px; /* Bordas levemente arredondadas para um visual mais moderno */
+    border-radius: 15px; /* Bordas levemente arredondadas para um visual mais moderno */
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Adiciona sombra para destacar o botão */
 }
 
@@ -163,3 +167,22 @@ body {
     font-family: comforta;
     font-size: xx-large;
 }
+
+.buttons {
+    background-color: #09133d;
+    font-size: 20px;
+    color: aliceblue;
+    height: 30px;
+    width: 80px;
+    margin: 10px;
+    border-radius: 15px;
+    border-color: #09133d;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.buttons:hover {
+    transform: scale(1.1);
+    
+}
+
