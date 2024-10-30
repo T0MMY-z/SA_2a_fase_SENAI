@@ -1,0 +1,67 @@
+
+.weekly-calendar-container {
+    padding: 150px;
+    text-align: center;
+
+  
+    
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    
+  }
+  
+  .header button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .week {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    font-family: comforta;
+    
+  }
+  
+  .day {
+    border: 1px solid #e0e0e0;
+    padding: 5px;
+    width: 200px;
+    text-align: center;
+    height: 400px;
+    background-color: white;
+  }
+  
+  .day h3 {
+    margin: 5px 0;
+    color: #1a347f;
+    font-family: comforta;
+  }
+
+  .voltaSemana{
+    color: white;
+    
+  }
+
+ .ProximaSemana{
+    color: white;
+    
+ }
+
+
+ @font-face {
+    font-family: comforta;
+    src: url(public/fonts/comforta.ttf);
+  }
+
+  .semanaTitulo{
+    font-family: comforta;
+  }
+
