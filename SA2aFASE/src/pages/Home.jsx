@@ -36,15 +36,13 @@ function Home() {
         </div>
 
         <div className="div-3">
-          <img src="public/images/foguete.png" alt="foguete"/>
+          <img src="public/images/landing.png" alt="foguete"/>
         </div>
       </div>
 
       <div className="div-5">
         
-        <button className="buttons">Email</button>
-        <button className="buttons">Twitter</button>
-        <button className="buttons">Youtube</button>
+       
         
       </div>
     </div>

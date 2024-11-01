@@ -1,9 +1,7 @@
 
 .weekly-calendar-container {
-    padding: 150px;
+    padding-top: 150px;
     text-align: center;
-
-  
     
   }
   
@@ -24,19 +22,26 @@
   
   .week {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 10px;
     margin-top: 20px;
     font-family: comforta;
-    
-  }
+    background-color: rgb(255, 255, 255);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 82%;
+    margin-left: auto;
+    margin-right: auto;
+   
+}
   
   .day {
     border: 1px solid #e0e0e0;
     padding: 5px;
     width: 200px;
     text-align: center;
-    height: 400px;
-    background-color: white;
+    height: 300px;
+    background-color: #ffffff;
   }
   
   .day h3 {
