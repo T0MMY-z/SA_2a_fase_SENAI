@@ -1,72 +1,65 @@
-
 .weekly-calendar-container {
-    padding-top: 150px;
-    text-align: center;
-    
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    
-  }
-  
-  .header button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .week {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    font-family: comforta;
-    background-color: rgb(255, 255, 255);
-    padding-top: 20px;
-    padding-bottom: 20px;
-    max-width: 82%;
-    margin-left: auto;
-    margin-right: auto;
-   
+  padding-top: 150px;
+  text-align: center;
 }
-  
-  .day {
-    border: 1px solid #e0e0e0;
-    padding: 5px;
-    width: 200px;
-    text-align: center;
-    height: 300px;
-    background-color: #ffffff;
-  }
-  
-  .day h3 {
-    margin: 5px 0;
-    color: #1a347f;
-    font-family: comforta;
-  }
 
-  .voltaSemana{
-    color: white;
-    
-  }
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
 
- .ProximaSemana{
-    color: white;
-    
- }
+.header button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
 
+.week {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  font-family: comforta;
+  padding: 20px 0;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+}
 
- @font-face {
-    font-family: comforta;
-    src: url(public/fonts/comforta.ttf);
-  }
+.day {
+  border-radius: 20px;
+  padding: 20px 10px; 
+  width: 170px; 
+  height: 350px; 
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+}
 
-  .semanaTitulo{
-    font-family: comforta;
-  }
+.day h3 {
+  margin: 10px 0;
+  color: #1a347f;
+  font-family: comforta;
+}
 
+.voltaSemana {
+  color: white;
+}
+
+.ProximaSemana {
+  color: white;
+}
+
+@font-face {
+  font-family: comforta;
+  src: url(public/fonts/comforta.ttf);
+}
+
+.semanaTitulo {
+  font-family: comforta;
+  font-size: x-large;
+}

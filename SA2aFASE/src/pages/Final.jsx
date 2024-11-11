@@ -11,30 +11,33 @@ function Profile() {
             <img src="public/images/perfil.png" alt="Profile" />
           </div>
           <div className="profile-info">
-            <p><strong>Nome</strong> Usuário</p>
-            <p><strong>Email</strong> usuario@example.com</p>
-            <p><strong>Senha</strong>123</p>
+            <p>Olá, usuario</p>
+            <button className="relatorio-button2">Relatório Semanal</button><br/>
+            <button className="excluir-button">Excluir Conta</button>
           </div>
+          
         </div>
         <div className="profile-edit">
           <h2>ALTERAR DADOS DA CONTA</h2>
           <div className="edit-field">
             <label>Nome</label>
-            <input type="text" placeholder="Nome" disabled />
+            <input type="text" disabled />
             <button className="edit-button">Editar</button>
           </div>
           <div className="edit-field">
             <label>Email</label>
-            <input type="email" placeholder="Email" disabled />
+            <input type="email"disabled />
             <button className="edit-button">Editar</button>
           </div>
           <div className="edit-field">
             <label>Senha</label>
-            <input type="password" placeholder="Senha" disabled />
+            <input type="password"  disabled />
             <button className="edit-button">Editar</button>
           </div>
         </div>
       </div>
+      
+      
     </div>
   );
 }
