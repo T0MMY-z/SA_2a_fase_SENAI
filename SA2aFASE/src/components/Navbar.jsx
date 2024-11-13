@@ -7,9 +7,8 @@ function Navbar() {
       <div className="navbar-logo">DreamZ</div>
       <div className="navbar-links">
         <Link to="/">Home</Link>
-        <Link to="/contato">Registro</Link>
-        <Link to="/generica">Calendario</Link>
-        <Link to="/final">Perfil</Link>
+        <Link to="/calendario">Calendario</Link>
+        <Link to="/perfil">Perfil</Link>
       </div>
     </nav>
   );

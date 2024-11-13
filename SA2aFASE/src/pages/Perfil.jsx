@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import './Final.css';
+import './Perfil.css';
 
 function Profile() {
   return (
@@ -12,7 +12,7 @@ function Profile() {
           </div>
           <div className="profile-info">
             <p>Olá, usuario</p>
-            <button className="relatorio-button2">Relatório Semanal</button><br/>
+            <button className="relatorio-button2"><a href="/relatorio" style={{ textDecoration: 'none', color: 'inherit' }}>Relatório Semanal</a></button><br/>
             <button className="excluir-button">Excluir Conta</button>
           </div>
           

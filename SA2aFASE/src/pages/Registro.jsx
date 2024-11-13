@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import "./Contato.css"; 
+import "./Registro.css"; 
 
 function Contato() {
   return (

@@ -29,7 +29,9 @@ function Home() {
          
           <div className="div-4">
 
-            <button className="btn-2">Comece aqui</button>
+          <button className="btn-2">
+            <a href="/registro" style={{ textDecoration: 'none', color: 'inherit' }}>Comece aqui</a>
+          </button>
 
           </div>
 
