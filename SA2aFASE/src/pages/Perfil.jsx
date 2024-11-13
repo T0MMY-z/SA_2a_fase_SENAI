@@ -1,5 +1,7 @@
 import Navbar from "../components/Navbar";
 import './Perfil.css';
+import { Link } from "react-router-dom";
+
 
 function Profile() {
   return (
@@ -12,7 +14,11 @@ function Profile() {
           </div>
           <div className="profile-info">
             <p>Olá, usuario</p>
-            <button className="relatorio-button2"><a href="/relatorio" style={{ textDecoration: 'none', color: 'inherit' }}>Relatório Semanal</a></button><br/>
+            <button className="relatorio-button2">
+                 <Link to="/relatorio" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Relatório Semanal
+                  </Link>
+                </button><br/>
             <button className="excluir-button">Excluir Conta</button>
           </div>
           
