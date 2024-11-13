@@ -2,6 +2,8 @@ import Navbar from "../components/Navbar";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import "./Home.css";
+import { Link } from "react-router-dom";
+
 
 function Home() {
   const { usuarioLogado } = useContext(GlobalContext);
@@ -30,8 +32,9 @@ function Home() {
           <div className="div-4">
 
           <button className="btn-2">
-            <a href="/registro" style={{ textDecoration: 'none', color: 'inherit' }}>Comece aqui</a>
+           <Link to="/registro" style={{ textDecoration: 'none', color: 'inherit' }}>Comece aqui</Link>
           </button>
+
 
           </div>
 

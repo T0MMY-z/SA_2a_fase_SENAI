@@ -1,5 +1,7 @@
 import Navbar from "../components/Navbar";
 import "./Registro.css"; 
+import { Link } from "react-router-dom";
+
 
 function Contato() {
   return (
@@ -25,8 +27,8 @@ function Contato() {
             <button className="register-button">REGISTRAR</button>
           </form>
           <p className="login-label">
-            Já possui conta? <a href="/login">Clique aqui</a>
-          </p>
+           Já possui conta? <Link to="/login">Clique aqui</Link>
+           </p>
         </div>
       </div>
     </div>
