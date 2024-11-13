@@ -5,6 +5,7 @@ import "./Home.css";
 import { Link } from "react-router-dom";
 
 
+
 function Home() {
   const { usuarioLogado } = useContext(GlobalContext);
 
@@ -32,7 +33,7 @@ function Home() {
           <div className="div-4">
 
           <button className="btn-2">
-           <Link to="/registro" style={{ textDecoration: 'none', color: 'inherit' }}>Comece aqui</Link>
+           <Link to="/registro" style={{ textDecoration: 'none', color: 'white' }}>Comece aqui</Link>
           </button>
 
 
