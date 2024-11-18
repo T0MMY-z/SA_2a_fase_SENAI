@@ -1,14 +1,26 @@
-import React, { useState } from 'react'
-import Navbar from "../components/Navbar"
-import './Calendario.css'
+import React, { useState } from 'react';
+import Navbar from "../components/Navbar";
+import EditCard from "../components/EditCard";
+import './Calendario.css';
 
 function WeeklyCalendar() {
-  const [weekNumber, setWeekNumber] = useState(1)
-  const daysOfWeek = ["Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo"]
+  const [weekNumber, setWeekNumber] = useState(1);
+  const [isEditing, setIsEditing] = useState(false); 
+  const [selectedDay, setSelectedDay] = useState("");
 
+  const daysOfWeek = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
 
-  const avancarSemana = () => setWeekNumber(weekNumber + 1)
-  const voltarSemana = () => setWeekNumber(weekNumber > 1 ? weekNumber - 1 : 1)
+  const avancarSemana = () => setWeekNumber(weekNumber + 1);
+  const voltarSemana = () => setWeekNumber(weekNumber > 1 ? weekNumber - 1 : 1);
+
+  const openEditCard = (day) => {
+    setSelectedDay(day); 
+    setIsEditing(true); 
+  };
+
+  const closeEditCard = () => {
+    setIsEditing(false); 
+  };
 
   return (
     <div>
@@ -23,10 +35,14 @@ function WeeklyCalendar() {
           {daysOfWeek.map((day, index) => (
             <div key={index} className="day">
               <h3>{day}</h3>
+              <button onClick={() => openEditCard(day)}>Editar</button>
             </div>
           ))}
         </div>
       </div>
+
+      {}
+      {isEditing && <EditCard day={selectedDay} onClose={closeEditCard} />}
     </div>
   );
 }

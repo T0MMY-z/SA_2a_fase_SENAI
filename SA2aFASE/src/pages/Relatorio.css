@@ -1,0 +1,93 @@
+.relatorio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #003366, #000033); 
+}
+
+.card-geral {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    height: 600px; 
+    background-color: #f4f6ff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+
+.card-stats {
+    width: 40%;
+    background-color: #f4f6ff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 3px solid rgb(77, 77, 77);
+    flex-direction: column;
+
+}
+
+.card-grafico {
+    width: 60%;
+    background-color: #f4f6ff; 
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-semana{
+    display: flex;
+    justify-content: center;
+    background-color: #1a347f;
+    width: 60%;
+    height: 10%;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.card-azul{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+    background-color: #1a347f;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+
+.card-semana {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a347f; 
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
+.semanaTitulo {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 20px;
+}
+
+
+.voltaSemana, .ProximaSemana {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
