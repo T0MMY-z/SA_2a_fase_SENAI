@@ -23,7 +23,7 @@ function WeeklyCalendar() {
   };
 
   return (
-    <div>
+    <div className='container-calendario'>
       <Navbar />
       <div className="weekly-calendar-container">
         <div className="header">
