@@ -24,15 +24,7 @@
     flex-direction: column;
     height: 700px; 
   }
-  .card-topo {
-    background-color: #1a347f;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 50%; 
-  }
-  
+
   .card-baixo {
     background-color: #ffffff;
     padding: 20px 30px;
@@ -42,22 +34,45 @@
     flex-direction: column;
     display:flex;
   }
-  
-  .logo {
+
+
+  .card-topo {
+    background-color: #1a347f;
+    padding: 10px 20px; /* Reduzi o padding vertical */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50%;
+    justify-content: center; /* Centraliza os itens verticalmente */
+    gap: 2px; /* Quase cola os elementos (logo, título e slogan) */
+}
+
+.logoteste {
     width: 230px;
     height: 210px;
-    margin-bottom: 40px;
-    font-family: comforta
+    margin-bottom: -10px;
+   
+}
+
+.dreamz-titulo {
+    font-size: 24px;
+    color: #ffffff;
+    margin: 0; /* Remove margens desnecessárias */
+    font-family: comforta;
+    margin-top: -10px;
     
-  }
-  
-  .slogan {
+}
+
+.slogandreamz {
     font-size: 16px;
     color: #ffffff;
-    margin: 0;
+    margin: 0; /* Remove margens desnecessárias */
     font-family: comforta;
-  }
-  
+    line-height: 1.2; /* Reduz o espaçamento entre as linhas */
+    margin-top: 20px;
+}
+
+
   .card-baixo {
     background-color: #ffffff;
     padding: 20px 30px;
@@ -123,5 +138,6 @@
   .login-label a:hover {
     text-decoration: underline;
   }
-  
+
+ 
   

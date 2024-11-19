@@ -43,19 +43,28 @@
     display:flex;
   }
   
-  .logo {
+  .logo-login {
     width: 230px;
     height: 210px;
-    margin-bottom: 40px;
-    font-family: comforta
+    margin-bottom: -10px;
     
   }
   
-  .slogan {
+  .slogan-login {
     font-size: 16px;
     color: #ffffff;
-    margin: 0;
+    margin: 0; /* Remove margens desnecessárias */
     font-family: comforta;
+    line-height: 1.2; /* Reduz o espaçamento entre as linhas */
+    margin-top: 20px;
+  }
+
+  .titulo-login{
+    font-size: 24px;
+    color: #ffffff;
+    margin: 0; /* Remove margens desnecessárias */
+    font-family: comforta;
+    margin-top: -10px;
   }
   
   .card-baixo {

@@ -9,8 +9,9 @@ function Contato() {
       <Navbar />
       <div className="card">
         <div className="card-topo">
-          <img src="public/images/logo_registro.png" alt="DreamZ Logo" className="logo" />
-          <h2 className="slogan">Onde sua noite de sono é importante para nós</h2>
+          <img src="public/images/logo_registro.png" alt="DreamZ Logo" className="logoteste" />
+          <label className="dreamz-titulo">DreamZ</label>
+          <h2 className="slogandreamz">Onde sua noite de sono é importante para nós</h2>
         </div>
         <div className="card-baixo">
           <h2 className="card-title">REGISTRE-SE</h2>
