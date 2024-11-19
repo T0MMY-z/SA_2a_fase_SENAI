@@ -14,19 +14,22 @@
 .edit-card {
   background-color: #1a347f;
   color: white;
-  width: 450px;
-  height: 600px;
+  width: 550px;
+  height: 700px;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: karla;
+  
+  
 }
 
 .edit-card h2 {
   text-align: center;
-  font-size: 28px;
+  font-size: 40px;
   margin-bottom: 20px;
 }
 
@@ -35,6 +38,7 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  margin-top: 10px;
 }
 
 .field-row {
@@ -45,7 +49,7 @@
 
 .field-row p {
   margin: 0;
-  font-size: 16px;
+  font-size: 23px;
   flex: 1;
   text-align: left;
 }
@@ -100,7 +104,7 @@ input[type="time"]:focus {
 }
 .avaliacao {
   text-align: center;
-  font-size: 18px;
+  font-size: 27px;
   font-weight: bold;
   margin-top: 20px;
 }
@@ -119,7 +123,7 @@ input[type="time"]:focus {
 }
 
 .feedback-message {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
 }
 
@@ -134,10 +138,17 @@ input[type="time"]:focus {
   background-color: #0044cc;
   color: white;
   border: none;
-  padding: 15px 25px;
-  font-size: 16px;
+  padding: 20px 30px;
+  font-size: 20px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 30px;
+  font-family: karla;
+}
+
+
+@font-face{
+  font-family: karla;
+  src: url(public/fonts/karla.ttf);
 }

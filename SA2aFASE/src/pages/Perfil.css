@@ -65,6 +65,7 @@
   color: rgb(58, 58, 58);
   font-size: 24px;
   margin-bottom: 30px;
+  font-family: karla;
 }
 
 .edit-field {
@@ -119,11 +120,12 @@
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 17px;
   width: 170px;
   height: 40px;
   cursor: pointer;
   margin-top: 10px;
+  font-family: karla;
 }
 
 .excluir-button {
@@ -131,13 +133,19 @@
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 17px;
   width: 170px;
   height: 40px;
   cursor: pointer;
   margin-top: 10px;
+  font-family: karla;
 }
 
 .excluir-button:hover {
   background-color: #990000;
+}
+
+@font-face{
+  font-family: karla;
+  src: url(public/fonts/karla.ttf);
 }
