@@ -4,7 +4,7 @@
     align-items: center;
     height: 100vh;
     width: 100%; 
-    background-image: url(./public/images/registro.png);
+    background-image: url('/images/registro.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

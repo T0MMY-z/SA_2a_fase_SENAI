@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import "./Login.css"; 
+import { Link } from "react-router-dom";
 
 function Contato() {
   return (
@@ -22,6 +23,9 @@ function Contato() {
             </div>
             <button className="register-button">Login</button>
           </form>
+          <p className="login-label">
+           Ainda não possui conta? <Link to="/registro">Clique aqui</Link>
+           </p>
         </div>
       </div>
     </div>
