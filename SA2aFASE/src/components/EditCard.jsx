@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./EditCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,29 +10,28 @@ import {
   faCloud,
 } from "@fortawesome/free-solid-svg-icons";
 
-function EditCard({ day, onClose }) {
-  const [selected, setSelected] = useState(null);
-  const [coffeeCups, setCoffeeCups] = useState(0); // Estado para o número de xícaras de café
-  const [sleepTime, setSleepTime] = useState({ sleep: "", wake: "" }); // Horário que se deitou e que se levantou
-  const [wokeUp, setWokeUp] = useState(false); // Se acordou durante a noite
-  const [dreamed, setDreamed] = useState(false); // Se sonhou
-  const [thumbsup, setThumbsup] = useState(false); // Se a avaliação foi positiva
-  const [thumbsdown, setThumbsdown] = useState(false); // Se a avaliação foi negativa
+function EditCard({ day, onClose, initialData }) {
+  const [coffeeCups, setCoffeeCups] = useState(initialData?.coffeeCups || 0);
+  const [sleepTime, setSleepTime] = useState({ sleep: initialData?.sleepTime.split(" - ")[0] || "", wake: initialData?.sleepTime.split(" - ")[1] || "" });
+  const [wokeUp, setWokeUp] = useState(initialData?.wokeUp || false);
+  const [dreamed, setDreamed] = useState(initialData?.dreamed || false);
+  const [thumbsup, setThumbsup] = useState(initialData?.thumbsup || false);
+  const [thumbsdown, setThumbsdown] = useState(initialData?.thumbsdown || false);
 
-  // Função para salvar os dados e passar para o calendário
+ 
   const handleSave = () => {
     const data = {
-      sleepTime: `${sleepTime.sleep} - ${sleepTime.wake}`, // Exemplo de tempo de sono
+      sleepTime: `${sleepTime.sleep} - ${sleepTime.wake}`,
       wokeUp,
       dreamed,
       coffeeCups,
       thumbsup,
       thumbsdown,
     };
-    onClose(data); // Passa os dados para o calendário
+    onClose(data);
   };
 
-  // Função para validar a quantidade de xícaras de café
+
   const handleCoffeeChange = (e) => {
     const value = e.target.value;
     if (value >= 0) {
@@ -97,25 +96,25 @@ function EditCard({ day, onClose }) {
             <FontAwesomeIcon
               icon={faThumbsUp}
               style={{
-                color: thumbsup ? "#008509" : "#bbb", // Altere a cor dependendo do estado
+                color: thumbsup ? "#008509" : "#bbb", 
                 cursor: "pointer",
                 fontSize: "60px",
               }}
               onClick={() => {
-                setThumbsup(!thumbsup); // Inverte o estado do thumbsup
-                setThumbsdown(false); // Garante que thumbsdown seja falso
+                setThumbsup(!thumbsup); 
+                setThumbsdown(false); 
               }}
             />
             <FontAwesomeIcon
               icon={faThumbsDown}
               style={{
-                color: thumbsdown ? "#a80000" : "#bbb", // Altere a cor dependendo do estado
+                color: thumbsdown ? "#a80000" : "#bbb", 
                 cursor: "pointer",
                 fontSize: "60px",
               }}
               onClick={() => {
-                setThumbsdown(!thumbsdown); // Inverte o estado do thumbsdown
-                setThumbsup(false); // Garante que thumbsup seja falso
+                setThumbsdown(!thumbsdown);
+                setThumbsup(false);
               }}
             />
           </div>

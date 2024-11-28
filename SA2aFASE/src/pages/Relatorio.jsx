@@ -14,14 +14,12 @@ function Relatorio() {
       <Navbar />
       <div className="card-geral">
         <div className="card-stats">
-          <div className='card-semana'>
-            <button className='voltaSemana' onClick={voltarSemana}>&lt;</button>
-            <h2 className='semanaTitulo'>Semana {weekNumber}</h2>
-            <button className='ProximaSemana' onClick={avancarSemana}>&gt;</button>
+          <div className='card-semana-relatorio'>
+            <button className='voltaSemana-relatorio' onClick={voltarSemana}>&lt;</button>
+            <h2 className='semanaTitulo-relatorio'>Semana {weekNumber}</h2>
+            <button className='ProximaSemana-relatorio' onClick={avancarSemana}>&gt;</button>
           </div>
-          <div className='card-azul'>
-
-          </div>
+          
         </div>
         <div className="card-grafico">
 
