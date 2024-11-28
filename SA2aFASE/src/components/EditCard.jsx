@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import "./EditCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp, faThumbsDown, faMugHot, faClock, faEye, faCloud } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsUp,
+  faThumbsDown,
+  faMugHot,
+  faClock,
+  faEye,
+  faCloud,
+} from "@fortawesome/free-solid-svg-icons";
 
 function EditCard({ day, onClose }) {
   const [selected, setSelected] = useState(null);
   const [coffeeCups, setCoffeeCups] = useState(0); // Estado para o número de xícaras de café
-  const [sleepTime, setSleepTime] = useState({ sleep: '', wake: '' }); // Horário que se deitou e que se levantou
+  const [sleepTime, setSleepTime] = useState({ sleep: "", wake: "" }); // Horário que se deitou e que se levantou
   const [wokeUp, setWokeUp] = useState(false); // Se acordou durante a noite
   const [dreamed, setDreamed] = useState(false); // Se sonhou
-  
+  const [thumbsup, setThumbsup] = useState(false); // Se a avaliação foi positiva
+  const [thumbsdown, setThumbsdown] = useState(false); // Se a avaliação foi negativa
 
   // Função para salvar os dados e passar para o calendário
   const handleSave = () => {
@@ -18,6 +26,8 @@ function EditCard({ day, onClose }) {
       wokeUp,
       dreamed,
       coffeeCups,
+      thumbsup,
+      thumbsdown,
     };
     onClose(data); // Passa os dados para o calendário
   };
@@ -37,39 +47,43 @@ function EditCard({ day, onClose }) {
         <div className="edit-fields">
           <div className="field-row">
             <p>Horário que se deitou</p>
-            <input 
-              type="time" 
-              value={sleepTime.sleep} 
-              onChange={(e) => setSleepTime({ ...sleepTime, sleep: e.target.value })}
+            <input
+              type="time"
+              value={sleepTime.sleep}
+              onChange={(e) =>
+                setSleepTime({ ...sleepTime, sleep: e.target.value })
+              }
             />
           </div>
           <div className="field-row">
             <p>Horário que se levantou</p>
-            <input 
-              type="time" 
-              value={sleepTime.wake} 
-              onChange={(e) => setSleepTime({ ...sleepTime, wake: e.target.value })}
+            <input
+              type="time"
+              value={sleepTime.wake}
+              onChange={(e) =>
+                setSleepTime({ ...sleepTime, wake: e.target.value })
+              }
             />
           </div>
           <div className="field-row">
             <p>Acordou durante a noite?</p>
-            <input 
-              type="checkbox" 
-              checked={wokeUp} 
-              onChange={() => setWokeUp(!wokeUp)} 
+            <input
+              type="checkbox"
+              checked={wokeUp}
+              onChange={() => setWokeUp(!wokeUp)}
             />
           </div>
           <div className="field-row">
             <p>Sonhou?</p>
-            <input 
-              type="checkbox" 
-              checked={dreamed} 
-              onChange={() => setDreamed(!dreamed)} 
+            <input
+              type="checkbox"
+              checked={dreamed}
+              onChange={() => setDreamed(!dreamed)}
             />
           </div>
           <div className="field-row">
             <p>Xícaras de café tomadas</p>
-            <input 
+            <input
               className="cafe-input"
               type="number"
               value={coffeeCups}
@@ -83,33 +97,27 @@ function EditCard({ day, onClose }) {
             <FontAwesomeIcon
               icon={faThumbsUp}
               style={{
-                color: "#008509",
+                color: thumbsup ? "#008509" : "#bbb", // Altere a cor dependendo do estado
                 cursor: "pointer",
                 fontSize: "60px",
               }}
-              onClick={() => setSelected("up")}
+              onClick={() => {
+                setThumbsup(!thumbsup); // Inverte o estado do thumbsup
+                setThumbsdown(false); // Garante que thumbsdown seja falso
+              }}
             />
             <FontAwesomeIcon
               icon={faThumbsDown}
               style={{
-                color: "#a80000",
+                color: thumbsdown ? "#a80000" : "#bbb", // Altere a cor dependendo do estado
                 cursor: "pointer",
                 fontSize: "60px",
               }}
-              onClick={() => setSelected("down")}
+              onClick={() => {
+                setThumbsdown(!thumbsdown); // Inverte o estado do thumbsdown
+                setThumbsup(false); // Garante que thumbsup seja falso
+              }}
             />
-          </div>
-          <div className="feedback-container">
-            {selected === "up" && (
-              <p className="feedback-message" style={{ color: "#008509" }}>
-                Você escolheu uma avaliação positiva!
-              </p>
-            )}
-            {selected === "down" && (
-              <p className="feedback-message" style={{ color: "#a80000" }}>
-                Você escolheu uma avaliação negativa!
-              </p>
-            )}
           </div>
         </div>
         <div className="edit-card-actions">

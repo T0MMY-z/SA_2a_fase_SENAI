@@ -44,23 +44,33 @@ function WeeklyCalendar() {
               {calendarData[day] && (
                 <div className="card-info">
                   <div className="info-row">
-                    <span className="info-text-horario">{calendarData[day].sleepTime}</span>
+                    <span title='Horário de sono' className="info-text-horario">{calendarData[day].sleepTime}</span>
                      
                   </div>
                   {calendarData[day].wokeUp && (
                     <div className="info-row">
-                      <FontAwesomeIcon icon={faEye} style={{ color: "#0332be", fontSize: "30px" }} />
+                      <FontAwesomeIcon title='Você acordou durante a noite?' icon={faEye} style={{ color: "#0332be", fontSize: "30px" }} />
                     </div>
                   )}
                   {calendarData[day].dreamed && (
                     <div className="info-row">
-                      <FontAwesomeIcon icon={faCloud} style={{ color: "#0332be", fontSize: "30px" }} />
+                      <FontAwesomeIcon title='Você sonhou?' icon={faCloud} style={{ color: "#0332be", fontSize: "30px" }} />
                     </div>
                   )}
                   {calendarData[day].coffeeCups > 0 && (
                     <div className="info-row">
                       <span className="info-text">{calendarData[day].coffeeCups}</span>
-                      <FontAwesomeIcon className='icon-cafe' icon={faMugHot} style={{ color: "#0332be", fontSize: "30px" }} />
+                      <FontAwesomeIcon title='Quantidade de café' className='icon-cafe' icon={faMugHot} style={{ color: "#0332be", fontSize: "30px" }} />
+                    </div>
+                  )}
+                  {calendarData[day].thumbsup && (
+                    <div className="info-row">
+                      <FontAwesomeIcon title='Avaliação Positiva' icon={faThumbsUp} style={{ color: "#008509", cursor: "pointer", fontSize: "40px" }} />
+                    </div>
+                  )}
+                  {calendarData[day].thumbsdown && (
+                    <div className="info-row">
+                      <FontAwesomeIcon title='Avaliação Negativa' icon={faThumbsDown} style={{ color: "#a80000", cursor: "pointer", fontSize: "40px" }} />
                     </div>
                   )}
                   
