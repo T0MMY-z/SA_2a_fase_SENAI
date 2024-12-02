@@ -14,7 +14,7 @@ function WeeklyCalendar() {
 
   const daysOfWeek = [
     "Domingo",
-    "Segunda-Feira",
+    "Segunda-Feira", 
     "Terça-Feira",
     "Quarta-Feira",
     "Quinta-Feira",
