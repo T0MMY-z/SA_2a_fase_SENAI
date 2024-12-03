@@ -1,9 +1,42 @@
 import Navbar from "../components/Navbar";
 import "./Registro.css"; 
 import { Link } from "react-router-dom";
+import axios from "axios"; // Importando o Axios
+import { useState } from "react"; // Importando useState para gerenciar os estados
 
+function Registro() {
+  // Definindo estados para os campos de formulário
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-function Contato() {
+  // Função de submit do formulário
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Verifica se os campos não estão vazios
+    if (!username || !email || !password) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    try {
+      // Envia os dados para o backend
+      const response = await axios.post("http://localhost:3000/users", {
+        username,
+        email,
+        password,
+      });
+
+      // Aqui você pode adicionar um redirecionamento ou outra ação após sucesso
+      alert("Usuário registrado com sucesso!");
+      console.log("Resposta do servidor:", response.data); // Verificando a resposta do servidor
+    } catch (error) {
+      console.error("Erro ao registrar:", error);
+      alert("Erro ao registrar. Verifique os dados e tente novamente.");
+    }
+  };
+
   return (
     <div className="contato-container">
       <Navbar />
@@ -15,25 +48,46 @@ function Contato() {
         </div>
         <div className="card-baixo">
           <h2 className="card-title">REGISTRE-SE</h2>
-          <form className="register-form">
+          <form className="register-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <input type="text" id="name" placeholder="Digite seu nome" />
+              <input
+                type="text"
+                id="name"
+                placeholder="Digite seu nome"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)} // Atualiza o valor do username
+                required
+              />
             </div>
             <div className="form-group">
-              <input type="email" id="email" placeholder="Digite seu e-mail" />
+              <input
+                type="email"
+                id="email"
+                placeholder="Digite seu e-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} // Atualiza o valor do email
+                required
+              />
             </div>
             <div className="form-group">
-              <input type="password" id="password" placeholder="Digite sua senha" />
+              <input
+                type="password"
+                id="password"
+                placeholder="Digite sua senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} // Atualiza o valor da senha
+                required
+              />
             </div>
-            <button className="register-button">REGISTRAR</button>
+            <button type="submit" className="register-button">REGISTRAR</button>
           </form>
           <p className="login-label">
-           Já possui conta? <Link to="/login">Clique aqui</Link>
-           </p>
+            Já possui conta? <Link to="/login">Clique aqui</Link>
+          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default Contato;
+export default Registro;
