@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import "./Registro.css"; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Incluindo useNavigate para redirecionar
 import axios from "axios"; // Importando o Axios
 import { useState } from "react"; // Importando useState para gerenciar os estados
 
@@ -9,6 +9,7 @@ function Registro() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Hook para navegação programática
 
   // Função de submit do formulário
   const handleSubmit = async (e) => {
@@ -28,9 +29,13 @@ function Registro() {
         password,
       });
 
-      // Aqui você pode adicionar um redirecionamento ou outra ação após sucesso
+      // Exibe mensagem de sucesso
       alert("Usuário registrado com sucesso!");
       console.log("Resposta do servidor:", response.data); // Verificando a resposta do servidor
+
+      // Redireciona para a página de login após o sucesso
+      navigate("/login");
+
     } catch (error) {
       console.error("Erro ao registrar:", error);
       alert("Erro ao registrar. Verifique os dados e tente novamente.");

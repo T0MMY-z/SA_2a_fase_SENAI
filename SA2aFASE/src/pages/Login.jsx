@@ -2,12 +2,14 @@ import Navbar from "../components/Navbar";
 import './Login.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Previne o recarregamento da página
+    e.preventDefault();
     const username = document.getElementById("name").value;
     const password = document.getElementById("password").value;
 
@@ -16,15 +18,16 @@ function Login() {
         username,
         password,
       });
-      
-      // Armazenando o usuário no localStorage após login bem-sucedido
-      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       alert(response.data.message);
-      console.log("Usuário logado:", response.data.user);
-      
-      // Redireciona para a página de perfil
-      navigate("/perfil");
+
+      // Armazena o sessionId no localStorage
+      const { sessionId, user } = response.data;
+      localStorage.setItem('sessionId', sessionId);  // Armazenando o sessionId no localStorage
+
+      // Redireciona para o perfil, passando o sessionId e o user
+      navigate("/perfil", { state: { user, sessionId } });
+
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("Nome ou senha incorretos!");
