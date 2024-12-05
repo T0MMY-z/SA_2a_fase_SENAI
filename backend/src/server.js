@@ -46,7 +46,7 @@ app.post('/login', async (req, res) => {
             // Deletar todas as sessões anteriores do usuário
             await pool.query('DELETE FROM sessions WHERE user_id = $1', [user.id]);
 
-            // Cria uma sessão no banco de dados
+            // Cria uma nova sessão
             const sessionResult = await pool.query(
                 'INSERT INTO sessions (user_id) VALUES ($1) RETURNING *',
                 [user.id]
@@ -65,13 +65,11 @@ app.post('/login', async (req, res) => {
 
 // Rota de logout
 app.post('/logout', async (req, res) => {
-    const { sessionId } = req.body;  // Recebe o sessionId da requisição
+    const { sessionId } = req.body;
 
     try {
-        // Deleta a sessão atual do usuário
         const deleteSessionResult = await pool.query('DELETE FROM sessions WHERE id = $1', [sessionId]);
 
-        // Verifique se a exclusão da sessão foi bem-sucedida
         if (deleteSessionResult.rowCount > 0) {
             res.status(200).json({ message: 'Logout bem-sucedido!' });
         } else {
@@ -113,36 +111,70 @@ app.get('/perfil', async (req, res) => {
     }
 });
 
-// Rota para atualizar dados do usuário
-app.put('/users/:id', async (req, res) => {
-    const { id } = req.params;
-    const { username, email, password } = req.body;
+const formatTime = (time) => {
+    const [hours, minutes] = time.split(":");
+    return `${hours}:${minutes}`; // Retorna apenas hora e minutos
+};
 
-    if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Nome, email e senha são obrigatórios!' });
-    }
+
+
+// Rota para inserção de dados de sono
+app.post('/sleep', async (req, res) => {
+    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown,} = req.body;
+
+    console.log("Dados recebidos no servidor:", req.body); // Verifique os dados aqui
+
+    const weekValue = parseInt(week, 10) || 1; // Converte week para número inteiro, se não, usa 1 como padrão
+
+    // Garantir que os tempos estejam formatados corretamente
+    const formattedSleepTime = formatTime(sleep_time);
+    const formattedWakeTime = formatTime(wake_time);
 
     try {
         const result = await pool.query(
-            'UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *',
-            [username, email, password, id]
+            'INSERT INTO sleep_data (user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error('Erro ao salvar dados de sono:', err.message);
+        res.status(500).json({ error: 'Erro ao salvar dados de sono!' });
+    }
+});
+
+// Rota para atualizar dados de sono
+app.put('/sleep/:id', async (req, res) => {
+    const { id } = req.params;
+    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
+
+    const weekValue = parseInt(week, 10) || 1;
+
+    // Garantir que os tempos estejam formatados corretamente
+    const formattedSleepTime = formatTime(sleep_time);
+    const formattedWakeTime = formatTime(wake_time);
+
+    try {
+        const result = await pool.query(
+            'UPDATE sleep_data SET user_id = $1, week = $2, day_of_week = $3, sleep_time = $4, wake_time = $5, woke_up = $6, dreamed = $7, coffee_cups = $8, thumbsup = $9, thumbsdown = $10 WHERE id = $11 RETURNING *',
+            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, id]
         );
 
         if (result.rows.length > 0) {
             res.status(200).json(result.rows[0]);
         } else {
-            res.status(404).json({ error: 'Usuário não encontrado!' });
+            res.status(404).json({ error: 'Dados de sono não encontrados!' });
         }
     } catch (err) {
         console.error(err.message);
-        res.status(500).json({ error: 'Erro ao atualizar dados!' });
+        res.status(500).json({ error: 'Erro ao atualizar dados de sono!' });
     }
 });
 
-// Iniciar servidor
+
+// Iniciar o servidor
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000!');
 });
 
-//aaaaa versao certa
 
+// 05/12

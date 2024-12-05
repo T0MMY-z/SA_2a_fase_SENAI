@@ -1,42 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./EditCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThumbsUp,
-  faThumbsDown,
-  faMugHot,
-  faClock,
-  faEye,
-  faCloud,
-} from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
-function EditCard({ day, onClose, initialData }) {
-  const [coffeeCups, setCoffeeCups] = useState(initialData?.coffeeCups || 0);
-  const [sleepTime, setSleepTime] = useState({ sleep: initialData?.sleepTime.split(" - ")[0] || "", wake: initialData?.sleepTime.split(" - ")[1] || "" });
-  const [wokeUp, setWokeUp] = useState(initialData?.wokeUp || false);
+function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
+  const [coffeeCups, setCoffeeCups] = useState(initialData?.coffee_cups || 0);
+  const [sleepTime, setSleepTime] = useState({
+    sleep: initialData?.sleep_time || "",
+    wake: initialData?.wake_time || "",
+  });
+  const [wokeUp, setWokeUp] = useState(initialData?.woke_up || false);
   const [dreamed, setDreamed] = useState(initialData?.dreamed || false);
   const [thumbsup, setThumbsup] = useState(initialData?.thumbsup || false);
   const [thumbsdown, setThumbsdown] = useState(initialData?.thumbsdown || false);
 
- 
+  const formatTime = (time) => {
+    if (!time) return "00:00";
+    const [hours, minutes] = time.split(":");
+    return `${hours}:${minutes}`; // Remove segundos
+};
   const handleSave = () => {
     const data = {
-      sleepTime: `${sleepTime.sleep} - ${sleepTime.wake}`,
-      wokeUp,
-      dreamed,
-      coffeeCups,
+      user_id: userId,
+      week,
+      day_of_week: day,
+      sleep_time: formatTime(sleepTime.sleep), // Trunca para HH:mm
+      wake_time: formatTime(sleepTime.wake),  // Trunca para HH:mm
+      woke_up: wokeUp,
+      dreamed: dreamed,
+      coffee_cups: coffeeCups,
       thumbsup,
       thumbsdown,
     };
-    onClose(data);
+  
+    const url = isEditing
+      ? `http://localhost:3000/sleep/${initialData.id}`
+      : "http://localhost:3000/sleep";
+  
+    const method = isEditing ? "put" : "post";
+  
+    axios({
+      method,
+      url,
+      data,
+    })
+      .then((response) => {
+        console.log("Dados de sono salvos com sucesso:", response.data);
+        onClose(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar os dados de sono:", error);
+      });
   };
-
-
+  
   const handleCoffeeChange = (e) => {
-    const value = e.target.value;
-    if (value >= 0) {
-      setCoffeeCups(value);
-    }
+    const value = parseInt(e.target.value, 10) || 0;
+    if (value >= 0) setCoffeeCups(value);
   };
 
   return (
@@ -96,19 +116,19 @@ function EditCard({ day, onClose, initialData }) {
             <FontAwesomeIcon
               icon={faThumbsUp}
               style={{
-                color: thumbsup ? "#008509" : "#bbb", 
+                color: thumbsup ? "#008509" : "#bbb",
                 cursor: "pointer",
                 fontSize: "60px",
               }}
               onClick={() => {
-                setThumbsup(!thumbsup); 
-                setThumbsdown(false); 
+                setThumbsup(!thumbsup);
+                setThumbsdown(false);
               }}
             />
             <FontAwesomeIcon
               icon={faThumbsDown}
               style={{
-                color: thumbsdown ? "#a80000" : "#bbb", 
+                color: thumbsdown ? "#a80000" : "#bbb",
                 cursor: "pointer",
                 fontSize: "60px",
               }}
