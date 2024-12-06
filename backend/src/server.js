@@ -111,30 +111,52 @@ app.get('/perfil', async (req, res) => {
     }
 });
 
+// Função para formatar o tempo apenas no formato HH:MM
 const formatTime = (time) => {
+    if (!time) return "00:00";
     const [hours, minutes] = time.split(":");
-    return `${hours}:${minutes}`; // Retorna apenas hora e minutos
+    return `${hours}:${minutes}`;
 };
 
+// Função para calcular a diferença em horas entre dois horários no formato HH:MM
+const calculateHoursSlept = (sleepTime, wakeTime) => {
+    const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
+    const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
+    
+    let differenceMs = wakeDate - sleepDate;
 
+    // Caso a pessoa tenha acordado no dia seguinte
+    if (differenceMs < 0) {
+        differenceMs += 24 * 60 * 60 * 1000;  // Adiciona um dia em milissegundos
+    }
+
+    const differenceHours = differenceMs / (1000 * 60 * 60);
+    return parseFloat(differenceHours.toFixed(2));  // Arredonda para 2 casas decimais
+};
 
 // Rota para inserção de dados de sono
 app.post('/sleep', async (req, res) => {
-    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown,} = req.body;
+    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
 
-    console.log("Dados recebidos no servidor:", req.body); // Verifique os dados aqui
+    console.log("Dados recebidos no servidor:", req.body);
 
-    const weekValue = parseInt(week, 10) || 1; // Converte week para número inteiro, se não, usa 1 como padrão
+    const weekValue = parseInt(week, 10) || 1;
 
-    // Garantir que os tempos estejam formatados corretamente
     const formattedSleepTime = formatTime(sleep_time);
     const formattedWakeTime = formatTime(wake_time);
 
+    // Calcular hours_slept
+    const hoursSlept = calculateHoursSlept(formattedSleepTime, formattedWakeTime);
+
+    console.log("Horas dormidas calculadas:", hoursSlept);
+
     try {
         const result = await pool.query(
-            'INSERT INTO sleep_data (user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
+            `INSERT INTO sleep_data (user_id, week, day_of_week, sleep_time, wake_time, hours_slept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
         );
+
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error('Erro ao salvar dados de sono:', err.message);
@@ -142,21 +164,25 @@ app.post('/sleep', async (req, res) => {
     }
 });
 
-// Rota para atualizar dados de sono
+// Rota para atualizar os dados de sono
 app.put('/sleep/:id', async (req, res) => {
     const { id } = req.params;
     const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
 
     const weekValue = parseInt(week, 10) || 1;
 
-    // Garantir que os tempos estejam formatados corretamente
     const formattedSleepTime = formatTime(sleep_time);
     const formattedWakeTime = formatTime(wake_time);
 
+    // Calcular hours_slept
+    const hoursSlept = calculateHoursSlept(formattedSleepTime, formattedWakeTime);
+
+    console.log("Horas dormidas atualizadas:", hoursSlept);
+
     try {
         const result = await pool.query(
-            'UPDATE sleep_data SET user_id = $1, week = $2, day_of_week = $3, sleep_time = $4, wake_time = $5, woke_up = $6, dreamed = $7, coffee_cups = $8, thumbsup = $9, thumbsdown = $10 WHERE id = $11 RETURNING *',
-            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, id]
+            `UPDATE sleep_data SET user_id = $1, week = $2, day_of_week = $3, sleep_time = $4, wake_time = $5, hours_slept = $6, woke_up = $7, dreamed = $8, coffee_cups = $9, thumbsup = $10, thumbsdown = $11 WHERE id = $12 RETURNING *`,
+            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, id]
         );
 
         if (result.rows.length > 0) {
@@ -165,7 +191,7 @@ app.put('/sleep/:id', async (req, res) => {
             res.status(404).json({ error: 'Dados de sono não encontrados!' });
         }
     } catch (err) {
-        console.error(err.message);
+        console.error('Erro ao atualizar dados de sono:', err.message);
         res.status(500).json({ error: 'Erro ao atualizar dados de sono!' });
     }
 });
@@ -175,6 +201,3 @@ app.put('/sleep/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000!');
 });
-
-
-// 05/12

@@ -18,20 +18,45 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
   const formatTime = (time) => {
     if (!time) return "00:00";
     const [hours, minutes] = time.split(":");
-    return `${hours}:${minutes}`; // Remove segundos
-};
+    return `${hours}:${minutes}`;
+  };
+
   const handleSave = () => {
+    console.log("Horário que deitou:", sleepTime.sleep);
+    console.log("Horário que acordou:", sleepTime.wake);
+  
+    // Calcular a duração do sono
+    const calculateHoursSlept = (sleepTime, wakeTime) => {
+      const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
+      const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
+      
+      let differenceMs = wakeDate - sleepDate;
+  
+      // Caso a pessoa tenha acordado no dia seguinte
+      if (differenceMs < 0) {
+        differenceMs += 24 * 60 * 60 * 1000;  // Adiciona um dia em milissegundos
+      }
+  
+      const differenceHours = differenceMs / (1000 * 60 * 60);
+      return parseFloat(differenceHours.toFixed(2));  // Arredonda para 2 casas decimais
+    };
+  
+    const hoursSlept = calculateHoursSlept(sleepTime.sleep, sleepTime.wake);
+  
+    console.log("Horas dormidas:", hoursSlept);
+  
     const data = {
       user_id: userId,
       week,
       day_of_week: day,
-      sleep_time: formatTime(sleepTime.sleep), // Trunca para HH:mm
-      wake_time: formatTime(sleepTime.wake),  // Trunca para HH:mm
+      sleep_time: formatTime(sleepTime.sleep),
+      wake_time: formatTime(sleepTime.wake),
       woke_up: wokeUp,
       dreamed: dreamed,
       coffee_cups: coffeeCups,
       thumbsup,
       thumbsdown,
+      hours_slept: hoursSlept,  // Envia a duração calculada ao backend
     };
   
     const url = isEditing
@@ -46,14 +71,21 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
       data,
     })
       .then((response) => {
-        console.log("Dados de sono salvos com sucesso:", response.data);
-        onClose(response.data);
+        const formattedData = {
+          ...response.data,
+          sleep_time: formatTime(response.data.sleep_time),
+          wake_time: formatTime(response.data.wake_time),
+        };
+  
+        console.log("Dados de sono salvos com sucesso:", formattedData);
+        onClose(formattedData);
       })
       .catch((error) => {
         console.error("Erro ao salvar os dados de sono:", error);
       });
   };
   
+
   const handleCoffeeChange = (e) => {
     const value = parseInt(e.target.value, 10) || 0;
     if (value >= 0) setCoffeeCups(value);
@@ -139,6 +171,7 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
             />
           </div>
         </div>
+
         <div className="edit-card-actions">
           <button className="btn-save" onClick={handleSave}>
             Finalizar
