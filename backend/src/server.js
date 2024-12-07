@@ -134,9 +134,9 @@ const calculateHoursSlept = (sleepTime, wakeTime) => {
     return parseFloat(differenceHours.toFixed(2));  // Arredonda para 2 casas decimais
 };
 
-// Rota para inserção de dados de sono
+// Rota para inserção ou atualização de dados de sono
 app.post('/sleep', async (req, res) => {
-    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
+    const { week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
 
     console.log("Dados recebidos no servidor:", req.body);
 
@@ -145,57 +145,41 @@ app.post('/sleep', async (req, res) => {
     const formattedSleepTime = formatTime(sleep_time);
     const formattedWakeTime = formatTime(wake_time);
 
-    // Calcular hours_slept
     const hoursSlept = calculateHoursSlept(formattedSleepTime, formattedWakeTime);
 
-    console.log("Horas dormidas calculadas:", hoursSlept);
-
     try {
-        const result = await pool.query(
-            `INSERT INTO sleep_data (user_id, week, day_of_week, sleep_time, wake_time, hours_slept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
+        // Verifica se já existe um registro para a mesma semana e dia da semana
+        const existingEntry = await pool.query(
+            'SELECT * FROM sleep_data WHERE week = $1 AND day_of_week = $2',
+            [weekValue, day_of_week]
         );
 
-        res.status(201).json(result.rows[0]);
+        if (existingEntry.rows.length > 0) {
+            // Atualiza o registro existente
+            const result = await pool.query(
+                `UPDATE sleep_data 
+                 SET sleep_time = $1, wake_time = $2, hours_slept = $3, woke_up = $4, dreamed = $5, coffee_cups = $6, thumbsup = $7, thumbsdown = $8 
+                 WHERE week = $9 AND day_of_week = $10 
+                 RETURNING *`,
+                [formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, weekValue, day_of_week]
+            );
+
+            res.status(200).json(result.rows[0]);
+        } else {
+            // Insere um novo registro
+            const result = await pool.query(
+                `INSERT INTO sleep_data (week, day_of_week, sleep_time, wake_time, hours_slept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) 
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+                [weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
+            );
+
+            res.status(201).json(result.rows[0]);
+        }
     } catch (err) {
         console.error('Erro ao salvar dados de sono:', err.message);
         res.status(500).json({ error: 'Erro ao salvar dados de sono!' });
     }
 });
-
-// Rota para atualizar os dados de sono
-app.put('/sleep/:id', async (req, res) => {
-    const { id } = req.params;
-    const { user_id, week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
-
-    const weekValue = parseInt(week, 10) || 1;
-
-    const formattedSleepTime = formatTime(sleep_time);
-    const formattedWakeTime = formatTime(wake_time);
-
-    // Calcular hours_slept
-    const hoursSlept = calculateHoursSlept(formattedSleepTime, formattedWakeTime);
-
-    console.log("Horas dormidas atualizadas:", hoursSlept);
-
-    try {
-        const result = await pool.query(
-            `UPDATE sleep_data SET user_id = $1, week = $2, day_of_week = $3, sleep_time = $4, wake_time = $5, hours_slept = $6, woke_up = $7, dreamed = $8, coffee_cups = $9, thumbsup = $10, thumbsdown = $11 WHERE id = $12 RETURNING *`,
-            [user_id, weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, id]
-        );
-
-        if (result.rows.length > 0) {
-            res.status(200).json(result.rows[0]);
-        } else {
-            res.status(404).json({ error: 'Dados de sono não encontrados!' });
-        }
-    } catch (err) {
-        console.error('Erro ao atualizar dados de sono:', err.message);
-        res.status(500).json({ error: 'Erro ao atualizar dados de sono!' });
-    }
-});
-
 
 // Iniciar o servidor
 app.listen(3000, () => {
