@@ -105,6 +105,29 @@ app.get('/perfil', async (req, res) => {
     }
 });
 
+app.put('/users/:id', async (req, res) => {
+    const { id } = req.params; // ID do usuário a ser atualizado
+    const { username, email, password } = req.body; // Dados a serem atualizados
+
+    try {
+        const result = await pool.query(
+            `UPDATE users 
+             SET username = $1, email = $2, password = $3 
+             WHERE id = $4 RETURNING *`,
+            [username, email, password, id]
+        );
+
+        if (result.rows.length > 0) {
+            res.status(200).json(result.rows[0]); // Retorna o usuário atualizado
+        } else {
+            res.status(404).json({ error: 'Usuário não encontrado!' });
+        }
+    } catch (err) {
+        console.error('Erro ao atualizar usuário:', err.message);
+        res.status(500).json({ error: 'Erro ao atualizar o usuário!' });
+    }
+});
+
 // Função para formatar o tempo apenas no formato HH:MM
 const formatTime = (time) => {
     if (!time) return "00:00";
