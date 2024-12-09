@@ -4,13 +4,13 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// Configurando pool para acesso ao banco de dados
+// Configurando pool para acesso ao banco de dados PostgreSQL
 const pool = new Pool({
-    user: 'postgres', // Substitua pelo seu usuário do PostgreSQL
+    user: 'postgres',
     host: 'localhost',
-    database: 'dreamz_db', // Nome da sua database
-    password: 'senai', // Sua senha do PostgreSQL
-    port: 5432, // Porta padrão do PostgreSQL
+    database: 'dreamz_db',
+    password: 'senai',
+    port: 5432,
 });
 
 // Habilitando CORS e configurando o express para aceitar JSON
@@ -25,7 +25,7 @@ app.post('/users', async (req, res) => {
             'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
             [username, email, password]
         );
-        res.status(201).json(result.rows[0]); // Retorna o novo usuário
+        res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: 'Erro ao cadastrar usuário!' });
@@ -40,20 +40,19 @@ app.post('/login', async (req, res) => {
             'SELECT * FROM users WHERE username = $1 AND password = $2',
             [username, password]
         );
+
         if (result.rows.length > 0) {
             const user = result.rows[0];
 
-            // Deletar todas as sessões anteriores do usuário
             await pool.query('DELETE FROM sessions WHERE user_id = $1', [user.id]);
 
-            // Cria uma nova sessão
             const sessionResult = await pool.query(
                 'INSERT INTO sessions (user_id) VALUES ($1) RETURNING *',
                 [user.id]
             );
             const session = sessionResult.rows[0];
 
-            res.status(200).json({ message: 'Login bem-sucedido!', user: user, sessionId: session.id });
+            res.status(200).json({ message: 'Login bem-sucedido!', user, sessionId: session.id });
         } else {
             res.status(401).json({ error: 'Nome de usuário ou senha incorretos!' });
         }
@@ -84,18 +83,13 @@ app.post('/logout', async (req, res) => {
 // Rota para obter o perfil do usuário logado
 app.get('/perfil', async (req, res) => {
     const { sessionId } = req.query;
+
     try {
-        const sessionResult = await pool.query(
-            'SELECT * FROM sessions WHERE id = $1',
-            [sessionId]
-        );
+        const sessionResult = await pool.query('SELECT * FROM sessions WHERE id = $1', [sessionId]);
 
         if (sessionResult.rows.length > 0) {
             const session = sessionResult.rows[0];
-            const userResult = await pool.query(
-                'SELECT * FROM users WHERE id = $1',
-                [session.user_id]
-            );
+            const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [session.user_id]);
 
             if (userResult.rows.length > 0) {
                 res.status(200).json(userResult.rows[0]);
@@ -122,57 +116,59 @@ const formatTime = (time) => {
 const calculateHoursSlept = (sleepTime, wakeTime) => {
     const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
     const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
-    
+
     let differenceMs = wakeDate - sleepDate;
 
-    // Caso a pessoa tenha acordado no dia seguinte
     if (differenceMs < 0) {
-        differenceMs += 24 * 60 * 60 * 1000;  // Adiciona um dia em milissegundos
+        differenceMs += 24 * 60 * 60 * 1000;
     }
 
     const differenceHours = differenceMs / (1000 * 60 * 60);
-    return parseFloat(differenceHours.toFixed(2));  // Arredonda para 2 casas decimais
+    return parseFloat(differenceHours.toFixed(2));
 };
 
 // Rota para inserção ou atualização de dados de sono
 app.post('/sleep', async (req, res) => {
     const { week, day_of_week, sleep_time, wake_time, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown } = req.body;
 
-    console.log("Dados recebidos no servidor:", req.body);
+    console.log('Valores recebidos:', { week, day_of_week, sleep_time, wake_time });
 
     const weekValue = parseInt(week, 10) || 1;
+    console.log('Semana:', weekValue, 'Dia da Semana:', day_of_week);
 
     const formattedSleepTime = formatTime(sleep_time);
     const formattedWakeTime = formatTime(wake_time);
-
     const hoursSlept = calculateHoursSlept(formattedSleepTime, formattedWakeTime);
 
     try {
-        // Verifica se já existe um registro para a mesma semana e dia da semana
+        // Buscar se existe um registro para a combinação semana/dia
         const existingEntry = await pool.query(
             'SELECT * FROM sleep_data WHERE week = $1 AND day_of_week = $2',
             [weekValue, day_of_week]
         );
 
+        console.log('Número de registros encontrados:', existingEntry.rows.length);
+
         if (existingEntry.rows.length > 0) {
-            // Atualiza o registro existente
+            // Atualizar registro existente
             const result = await pool.query(
                 `UPDATE sleep_data 
                  SET sleep_time = $1, wake_time = $2, hours_slept = $3, woke_up = $4, dreamed = $5, coffee_cups = $6, thumbsup = $7, thumbsdown = $8 
-                 WHERE week = $9 AND day_of_week = $10 
-                 RETURNING *`,
+                 WHERE week = $9 AND day_of_week = $10 RETURNING *`,
                 [formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown, weekValue, day_of_week]
             );
 
+            console.log('Registro atualizado:', result.rows[0]);
             res.status(200).json(result.rows[0]);
         } else {
-            // Insere um novo registro
+            // Inserir um novo registro caso não exista
             const result = await pool.query(
                 `INSERT INTO sleep_data (week, day_of_week, sleep_time, wake_time, hours_slept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown) 
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
                 [weekValue, day_of_week, formattedSleepTime, formattedWakeTime, hoursSlept, woke_up, dreamed, coffee_cups, thumbsup, thumbsdown]
             );
 
+            console.log('Novo registro inserido:', result.rows[0]);
             res.status(201).json(result.rows[0]);
         }
     } catch (err) {

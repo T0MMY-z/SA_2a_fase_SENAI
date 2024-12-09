@@ -24,30 +24,26 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
   const handleSave = () => {
     console.log("Horário que deitou:", sleepTime.sleep);
     console.log("Horário que acordou:", sleepTime.wake);
-  
-    // Calcular a duração do sono
+
     const calculateHoursSlept = (sleepTime, wakeTime) => {
       const sleepDate = new Date(`1970-01-01T${sleepTime}:00`);
       const wakeDate = new Date(`1970-01-01T${wakeTime}:00`);
-      
+
       let differenceMs = wakeDate - sleepDate;
-  
-      // Caso a pessoa tenha acordado no dia seguinte
+
       if (differenceMs < 0) {
-        differenceMs += 24 * 60 * 60 * 1000;  // Adiciona um dia em milissegundos
+        differenceMs += 24 * 60 * 60 * 1000;
       }
-  
+
       const differenceHours = differenceMs / (1000 * 60 * 60);
-      return parseFloat(differenceHours.toFixed(2));  // Arredonda para 2 casas decimais
+      return parseFloat(differenceHours.toFixed(2));
     };
-  
+
     const hoursSlept = calculateHoursSlept(sleepTime.sleep, sleepTime.wake);
-  
-    console.log("Horas dormidas:", hoursSlept);
-  
+
     const data = {
       user_id: userId,
-      week,
+      week,  // Passa a semana correta
       day_of_week: day,
       sleep_time: formatTime(sleepTime.sleep),
       wake_time: formatTime(sleepTime.wake),
@@ -56,15 +52,20 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
       coffee_cups: coffeeCups,
       thumbsup,
       thumbsdown,
-      hours_slept: hoursSlept,  // Envia a duração calculada ao backend
+      hours_slept: hoursSlept,
     };
-  
+
+    if (isEditing && !initialData?.id) {
+      console.error("Erro: O ID do registro de edição não está presente.");
+      return;
+    }
+
     const url = isEditing
       ? `http://localhost:3000/sleep/${initialData.id}`
       : "http://localhost:3000/sleep";
-  
+
     const method = isEditing ? "put" : "post";
-  
+
     axios({
       method,
       url,
@@ -76,7 +77,7 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
           sleep_time: formatTime(response.data.sleep_time),
           wake_time: formatTime(response.data.wake_time),
         };
-  
+
         console.log("Dados de sono salvos com sucesso:", formattedData);
         onClose(formattedData);
       })
@@ -84,7 +85,6 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
         console.error("Erro ao salvar os dados de sono:", error);
       });
   };
-  
 
   const handleCoffeeChange = (e) => {
     const value = parseInt(e.target.value, 10) || 0;
@@ -94,7 +94,8 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
   return (
     <div className="edit-card-overlay">
       <div className="edit-card">
-        <h2>{day}</h2>
+        <h2>Semana {week} - {day}</h2>
+
         <div className="edit-fields">
           <div className="field-row">
             <p>Horário que se deitou</p>
@@ -106,8 +107,9 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
               }
             />
           </div>
+
           <div className="field-row">
-            <p>Horário que se levantou</p>
+            <p>Horário que acordou</p>
             <input
               type="time"
               value={sleepTime.wake}
@@ -116,6 +118,7 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
               }
             />
           </div>
+
           <div className="field-row">
             <p>Acordou durante a noite?</p>
             <input
@@ -124,6 +127,7 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
               onChange={() => setWokeUp(!wokeUp)}
             />
           </div>
+
           <div className="field-row">
             <p>Sonhou?</p>
             <input
@@ -132,13 +136,14 @@ function EditCard({ day, onClose, initialData, userId, week, isEditing }) {
               onChange={() => setDreamed(!dreamed)}
             />
           </div>
+
           <div className="field-row">
-            <p>Xícaras de café tomadas</p>
+            <p>Xícaras de café</p>
             <input
               className="cafe-input"
               type="number"
-              value={coffeeCups}
               min="0"
+              value={coffeeCups}
               onChange={handleCoffeeChange}
             />
           </div>
