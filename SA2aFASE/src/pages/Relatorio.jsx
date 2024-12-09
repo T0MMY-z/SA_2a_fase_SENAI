@@ -4,7 +4,7 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import "./Relatorio.css";
 
 function Relatorio() {
-  const { calendarData } = useContext(GlobalContext); // Acessa os dados do calendário
+  const { calendarData } = useContext(GlobalContext);
   const [weekNumber, setWeekNumber] = useState(1);
 
   // Obtém os dados da semana atual
@@ -19,18 +19,25 @@ function Relatorio() {
     return daysOfWeek.every((day) => weekData[day]);
   };
 
-  // Gera o texto do relatório
+  // Gera o relatório da semana
   const generateReport = () => {
     const weekData = getCurrentWeekData();
     const days = Object.values(weekData);
 
     const totalSleepHours = days.reduce((sum, day) => sum + (parseFloat(day.sleepHours) || 0), 0);
+    const averageSleep = (totalSleepHours / 7).toFixed(1);
+
     const totalDreams = days.filter((day) => day.dreamed).length;
     const totalWakeups = days.filter((day) => day.wokeUp).length;
     const totalCoffeeCups = days.reduce((sum, day) => sum + (day.coffeeCups || 0), 0);
     const quality = days.filter((day) => day.thumbsup).length > days.filter((day) => day.thumbsdown).length ? "boa" : "ruim";
 
-    return `Na semana ${weekNumber}, você dormiu em média ${(totalSleepHours / 7).toFixed(1)} horas por noite, sonhou ${totalDreams} vezes e acordou durante a noite ${totalWakeups} vezes. A qualidade do seu sono foi predominantemente classificada como ${quality}. Durante a semana, você consumiu um total de ${totalCoffeeCups} xícaras de café.`;
+    return (
+      `Na semana ${weekNumber}, você dormiu em média ${averageSleep} horas por noite, ` +
+      `sonhou ${totalDreams} vezes, acordou durante a noite ${totalWakeups} vezes, ` +
+      `e a qualidade do sono foi predominantemente considerada como ${quality}. ` +
+      `Durante a semana, você consumiu um total de ${totalCoffeeCups} xícaras de café.`
+    );
   };
 
   return (
@@ -39,7 +46,10 @@ function Relatorio() {
       <div className="card-geral">
         <div className="card-stats">
           <div className="card-semana-relatorio">
-            <button className="voltaSemana-relatorio" onClick={() => setWeekNumber(Math.max(1, weekNumber - 1))}>
+            <button
+              className="voltaSemana-relatorio"
+              onClick={() => setWeekNumber(Math.max(1, weekNumber - 1))}
+            >
               &lt;
             </button>
             <h2 className="semanaTitulo-relatorio">Semana {weekNumber}</h2>
@@ -51,10 +61,12 @@ function Relatorio() {
           {/* Verifica se a semana está completa */}
           {!isWeekComplete() ? (
             <p className="mensagem-incompleta">
-              Preencha todos os dias da semana {weekNumber} antes de acessar o relatório.
+              
             </p>
           ) : (
-            <p>{generateReport()}</p>
+            <p className="relatorio-texto">
+              {generateReport()}
+            </p>
           )}
         </div>
       </div>

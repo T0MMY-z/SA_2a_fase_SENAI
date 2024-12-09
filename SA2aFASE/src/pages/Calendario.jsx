@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import EditCard from "../components/EditCard";
 import "./Calendario.css";
@@ -22,6 +22,17 @@ function WeeklyCalendar() {
     "Sábado",
   ];
 
+  // Função para carregar os dados do Local Storage ao montar o componente
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("calendarioData")) || {};
+    setCalendarData(storedData);
+  }, []);
+
+  // Função para salvar os dados no Local Storage
+  const saveToLocalStorage = (data) => {
+    localStorage.setItem("calendarioData", JSON.stringify(data));
+  };
+
   // Função para avançar à próxima semana
   const avancarSemana = async () => {
     if (!isWeekComplete()) {
@@ -35,13 +46,15 @@ function WeeklyCalendar() {
 
     setWeekNumber(nextWeek);
 
-    // Apenas atualiza visualmente sem enviar ao backend
-    setCalendarData((prevData) => ({
-      ...prevData,
-      [`semana${nextWeek}`]: prevData[`semana${nextWeek}`] || {},
-    }));
-
-    console.log(`Avançou visualmente para a Semana ${nextWeek}`);
+    // Atualiza os dados localmente e salva no Local Storage
+    setCalendarData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        [`semana${nextWeek}`]: prevData[`semana${nextWeek}`] || {},
+      };
+      saveToLocalStorage(updatedData);
+      return updatedData;
+    });
   };
 
   // Função para voltar à semana anterior
@@ -61,13 +74,17 @@ function WeeklyCalendar() {
     setIsEditing(false);
 
     if (data) {
-      setCalendarData((prevData) => ({
-        ...prevData,
-        [`semana${weekNumber}`]: {
-          ...prevData[`semana${weekNumber}`],
-          [selectedDay]: data,
-        }
-      }));
+      setCalendarData((prevData) => {
+        const updatedData = {
+          ...prevData,
+          [`semana${weekNumber}`]: {
+            ...prevData[`semana${weekNumber}`],
+            [selectedDay]: data,
+          },
+        };
+        saveToLocalStorage(updatedData); // Salva os dados no Local Storage
+        return updatedData;
+      });
     }
   };
 
@@ -78,6 +95,8 @@ function WeeklyCalendar() {
     const weekData = getCurrentWeekData();
     return daysOfWeek.every((day) => weekData[day]);
   };
+
+
 
   return (
     <div className="container-calendario">
@@ -102,16 +121,21 @@ function WeeklyCalendar() {
             return (
               <div key={index} className="day">
                 <h3>{day}</h3>
-
+            
                 {dayData && (
                   <div className="card-info">
-                    <div className="info-row">
-                      <span title="Horário de sono" className="info-text-horario">
-                        {dayData.sleepTime}
-                      </span>
-                    </div>
-
-                    {dayData.wokeUp && (
+                    {dayData.sleep_time && dayData.wake_time && (
+                      <div className="info-row">
+                        <span title="Horário que deitou" className="info-text-horario">
+                          {dayData.sleep_time}
+                        </span>
+                        <span title="Horário que acordou" className="info-text-horario">
+                          {dayData.wake_time}
+                        </span>
+                      </div>
+                    )}
+            
+                    {dayData.woke_up && (
                       <div className="info-row">
                         <FontAwesomeIcon
                           title="Você acordou durante a noite"
@@ -120,7 +144,7 @@ function WeeklyCalendar() {
                         />
                       </div>
                     )}
-
+            
                     {dayData.dreamed && (
                       <div className="info-row">
                         <FontAwesomeIcon
@@ -130,10 +154,10 @@ function WeeklyCalendar() {
                         />
                       </div>
                     )}
-
-                    {dayData.coffeeCups > 0 && (
-                      <div className="info-row">
-                        <span className="info-text">{dayData.coffeeCups}</span>
+            
+                    {dayData.coffee_cups > 0 && (
+                      <div className="info-row-cafe">
+                        <span className="info-text-cafe">{dayData.coffee_cups}</span>
                         <FontAwesomeIcon
                           title="Quantidade de café"
                           icon={faMugHot}
@@ -141,7 +165,7 @@ function WeeklyCalendar() {
                         />
                       </div>
                     )}
-
+            
                     {dayData.thumbsup && (
                       <div className="info-row">
                         <FontAwesomeIcon
@@ -151,7 +175,7 @@ function WeeklyCalendar() {
                         />
                       </div>
                     )}
-
+            
                     {dayData.thumbsdown && (
                       <div className="info-row">
                         <FontAwesomeIcon
