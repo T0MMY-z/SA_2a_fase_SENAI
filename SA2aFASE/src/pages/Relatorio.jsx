@@ -52,26 +52,29 @@ function Relatorio() {
   
   const handleGenerateReport = async () => {
     try {
-        const response = await axios.get(`http://localhost:3000/check-complete-week/${weekNumber}`);
-
-        if (response.data.complete) {
-            const reportResponse = await axios.post('http://localhost:3000/generate-weekly-report', { week: weekNumber });
-            const reportData = reportResponse.data;
-
-            setReportText(`
-              Na semana ${weekNumber}, você dormiu em média ${reportData.average_hours_slept} horas por noite, 
-sonhou ${reportData.dreamed_count} vezes e acordou durante a noite ${reportData.woke_up_count} vezes. 
-A qualidade do seu sono foi predominantemente classificada como boa/ruim, refletindo a maior parte das noites. 
-Durante a semana, você consumiu um total de ${reportData.average_coffee_cups} xícaras de café.
-            `);
-        } else {
-            alert('A semana está incompleta. Faltam alguns dias de registros.');
-        }
+      const response = await axios.get(`http://localhost:3000/check-complete-week/${weekNumber}`);
+  
+      if (response.data.complete) {
+        const reportResponse = await axios.post('http://localhost:3000/generate-weekly-report', { week: weekNumber });
+        const reportData = reportResponse.data;
+  
+        // Verificar a qualidade do sono
+        const sleepQuality = reportData.thumbsup_count > reportData.thumbsdown_count ? "boa" : "ruim";
+  
+        setReportText(`
+          Na semana ${weekNumber}, você dormiu em média ${reportData.average_hours_slept} horas por noite, 
+          sonhou ${reportData.dreamed_count} vezes e acordou durante a noite ${reportData.woke_up_count} vezes. 
+          A qualidade do seu sono foi predominantemente classificada como ${sleepQuality}, refletindo a maior parte das noites. 
+          Durante a semana, você consumiu um total de ${reportData.average_coffee_cups} xícaras de café.
+        `);
+      } else {
+        alert('A semana está incompleta. Faltam alguns dias de registros.');
+      }
     } catch (error) {
-        console.error('Erro ao gerar relatório:', error.message);
-        alert('Erro ao verificar ou gerar o relatório.');
+      console.error('Erro ao gerar relatório:', error.message);
+      alert('Erro ao verificar ou gerar o relatório.');
     }
-};
+  };
   return (
     <div className="relatorio-container">
   <Navbar />
