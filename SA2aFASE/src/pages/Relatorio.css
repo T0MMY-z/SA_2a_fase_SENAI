@@ -1,3 +1,4 @@
+/* Container principal */
 .relatorio-container {
     display: flex;
     justify-content: center;
@@ -6,6 +7,7 @@
     background: linear-gradient(to bottom, #003366, #000033); 
 }
 
+/* Card principal */
 .card-geral {
     display: flex;
     width: 80%;
@@ -18,7 +20,7 @@
     margin-top: 50px;
 }
 
-
+/* Seção dos elementos do card */
 .card-stats {
     width: 40%;
     background-color: #f4f6ff;
@@ -27,20 +29,9 @@
     align-items: center;
     border-right: 3px solid rgb(77, 77, 77);
     flex-direction: column;
-
 }
 
-.card-grafico {
-    width: 60%;
-    background-color: #f4f6ff; 
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
+/* Container dos botões e título da semana */
 .card-semana-relatorio {
     display: flex;
     align-items: center;
@@ -51,7 +42,7 @@
     margin-bottom: 20px;
 }
 
-
+/* Título da Semana */
 .semanaTitulo-relatorio {
     color: #1a347f; 
     font-family: 'Arial', sans-serif;
@@ -60,7 +51,7 @@
     margin: 0 20px;
 }
 
-
+/* Botões de navegação */
 .voltaSemana-relatorio, .ProximaSemana-relatorio {
     background: none;
     border: none;
@@ -70,3 +61,19 @@
     cursor: pointer;
     transition: transform 0.2s;
 }
+
+/* Botão principal - estilo grande */
+.btn-gerar-relatorio {
+    background-color: #093880;
+    color: #fff;
+    padding: 15px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+

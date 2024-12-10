@@ -200,6 +200,85 @@ app.post('/sleep', async (req, res) => {
     }
 });
 
+// Rota para buscar relatórios das semanas do backend
+app.get('/reports', async (req, res) => {
+    try {
+      const result = await pool.query('SELECT * FROM weekly_reports ORDER BY week ASC');
+      res.status(200).json(result.rows);
+    } catch (error) {
+      console.error('Erro ao buscar relatórios:', error.message);
+      res.status(500).json({ error: 'Erro ao buscar relatórios' });
+    }
+  });
+  
+
+// Rota para gerar relatório e salvar no banco de dados
+// Rota para gerar o relatório da semana e salvar no banco de dados
+app.post('/generate-weekly-report', async (req, res) => {
+    const { week } = req.body;
+
+    try {
+        const result = await pool.query(
+            `SELECT 
+                AVG(hours_slept) as average_hours_slept,
+                SUM(CAST(coffee_cups AS INTEGER)) as average_coffee_cups,
+                SUM(thumbsup::int) as thumbsup_count,
+                SUM(thumbsdown::int) as thumbsdown_count,
+                COUNT(CASE WHEN woke_up THEN 1 ELSE NULL END) as woke_up_count,
+                COUNT(CASE WHEN dreamed THEN 1 ELSE NULL END) as dreamed_count
+            FROM sleep_data 
+            WHERE week = $1`,
+            [week]
+        );
+
+        const {
+            average_hours_slept,
+            average_coffee_cups,
+            thumbsup_count,
+            thumbsdown_count,
+            woke_up_count,
+            dreamed_count
+        } = result.rows[0];
+
+        const insertReport = await pool.query(
+            `INSERT INTO weekly_reports (week, average_hours_slept, average_coffee_cups, thumbsup_count, thumbsdown_count, woke_up_count, dreamed_count)
+             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            [week, average_hours_slept, average_coffee_cups, thumbsup_count, thumbsdown_count, woke_up_count, dreamed_count]
+        );
+
+        res.status(200).json(insertReport.rows[0]);
+    } catch (err) {
+        console.error('Erro ao gerar relatório:', err.message);
+        res.status(500).json({ error: 'Erro ao gerar relatório.' });
+    }
+});
+
+
+
+  
+  
+
+  app.get('/check-complete-week/:week', async (req, res) => {
+    const { week } = req.params;
+  
+    try {
+      const result = await pool.query(
+        'SELECT COUNT(*) FROM sleep_data WHERE week = $1',
+        [week]
+      );
+  
+      const count = parseInt(result.rows[0].count, 10);
+  
+      if (count === 7) {
+        res.status(200).json({ complete: true });
+      } else {
+        res.status(400).json({ complete: false, message: `Faltam ${7 - count} dias.` });
+      }
+    } catch (err) {
+      console.error('Erro ao verificar semana:', err.message);
+      res.status(500).json({ error: 'Erro ao verificar semana.' });
+    }
+  });
 
 
 
