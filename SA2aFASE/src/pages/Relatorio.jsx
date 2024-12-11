@@ -45,7 +45,9 @@ function Relatorio() {
       return alert(`A semana ${weekNumber} está incompleta. Faltam alguns dias de dados.`);
     }
 
-    return `Na semana ${weekNumber}, você dormiu em média ${average_hours_slept} horas, 
+    const formattedSleepHours = average_hours_slept.toFixed(2);
+
+    return `Na semana ${weekNumber}, você dormiu em média ${formattedSleepHours} horas, 
             consumiu ${average_coffee_cups} xícaras de café, 
             recebeu ${thumbsup_count} feedbacks positivos e teve ${thumbsdown_count} feedbacks negativos.`;
   };
@@ -106,7 +108,7 @@ function Relatorio() {
           const sleepQuality = reportData.thumbsup_count > reportData.thumbsdown_count ? "boa" : "ruim";
 
           setReportText(`
-            Na semana ${weekNumber}, você dormiu em média ${reportData.average_hours_slept} horas por noite, 
+            Na semana ${weekNumber}, você dormiu em média ${reportData.average_hours_slept.toFixed(2)} horas por noite, 
             sonhou ${reportData.dreamed_count} vezes e acordou durante a noite ${reportData.woke_up_count} vezes. 
             A qualidade do seu sono foi predominantemente classificada como ${sleepQuality}. 
             Durante a semana, você consumiu um total de ${reportData.average_coffee_cups} xícaras de café.
